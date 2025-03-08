@@ -1,12 +1,29 @@
-# React + Vite
+# Project - Job Portal
+Ongoing Project of MERN Stack based Online Job Portal - Server (API)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+Welcome to **Project Job Portal ** comprehensive backend solution for a job-seeking portal. This project aims to provide a seamless and efficient platform for job seekers and employers to connect. Job seekers can find and apply for jobs, while employers can post job listings and search for potential employees. This repository contains the server-side code, including routing, controllers, middleware, and database configurations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **User Authentication and Authorization:** Separate login systems for job seekers and employers.
+- **Job Management:** Employers can post jobs, and job seekers can search and apply for jobs.
+- **Detailed Job Descriptions:** Each job posting contains comprehensive details to help job seekers make informed decisions.
+- **Error Handling:** Robust middleware for handling errors and asynchronous operations.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technologies Used
+
+- **Node.js:** JavaScript runtime environment.
+- **Express.js:** Web application framework for Node.js.
+- **MongoDB:** NoSQL database for storing user and job data.
+- **Mongoose:** ODM for MongoDB and Node.js.
+- **JWT:** For user authentication and authorization.
+
+## Technologies Used
+
+- **Node.js:** JavaScript runtime environment.
+- **Express.js:** Web application framework for Node.js.
+- **MongoDB:** NoSQL database for storing user and job data.
+- **Mongoose:** ODM for MongoDB and Node.js.
+- **JWT:** For user authentication and authorization.
