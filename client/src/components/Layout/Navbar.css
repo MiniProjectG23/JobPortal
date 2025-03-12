@@ -1,0 +1,132 @@
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #ff7e5f; /* Sidebar color */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Outer black shadow */
+  border: 2px solid white; /* Inner white outline */
+  transform: translateX(-100%);
+}
+
+.sidebarContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Ensure children are positioned relative to this container */
+}
+
+.sidebarLogo {
+  position: absolute;
+  top: -10px;
+  right: 5px;
+  width: auto; /* Adjust width as needed */
+  height: 5rem;
+}
+
+.sidebarMenu {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  margin-top: 60px;
+}
+
+.sidebarMenu li {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.sidebarMenu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 15px 0;
+  width: 100%;
+  display: block;
+}
+
+.sidebarMenu li a:hover,
+.sidebarMenu li a.active {
+  color: #ff7e5f; /* Text color on hover */
+  background-color: white; /* Background color on hover */
+}
+
+.logoutButton {
+  /* background: linear-gradient(to right, #3f4ffa, #eeb4eb); Gradient effect */
+  background-color: #101b70;
+  color: white;
+  border: none;
+  padding: 10px 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 50%;
+  margin: 10px auto;
+  border-radius: 4rem;
+}
+
+.logoutButton:hover {
+  background: #8400ff; /* Gradient effect on hover */
+  color: #ffffff; /* Red text */
+  transition: all 0.8s ease-in-out;
+}
+
+.hamburgerMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #ff7e5f; /* Icon color */
+  background-color: white; /* Background circle */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 1100; /* Higher than sidebar */
+  transition: transform 0.3s ease;
+}
+
+.hamburgerMenu:hover {
+  transform: scale(1.1);
+}
+
+.hamburgerMenu svg {
+  transition: transform 0.3s ease;
+}
+
+.hamburgerMenu:hover svg {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .sidebarMenu {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebarMenu li {
+    margin: 10px 0;
+  }
+}
