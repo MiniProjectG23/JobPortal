@@ -5,6 +5,8 @@ import './App.css'
 import {BrowserRouter, Route,Routes} from 'react-router-dom'
 import Login from './components/Auth/Login'
 import Navbar from './components/Layout/Navbar'
+import Footer from './components/Layout/Footer'
+import Home from './components/Home/Home'
 const  App = () => {
 
   return (
@@ -13,7 +15,9 @@ const  App = () => {
     <Navbar/>
     <Routes>
       <Route path = '/login' element = {<Login/>}/>
+      <Route path = '/' element = {<Home/>}/>
     </Routes>
+    <Footer/>
     </BrowserRouter>
     </>
   )

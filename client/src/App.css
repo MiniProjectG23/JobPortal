@@ -74,7 +74,7 @@ p {
   }
 }
 
-/* .authPage {
+ .authPage {
   display: flex;
   min-width: 1500px;
   max-width: 1500px;
@@ -256,7 +256,7 @@ p {
   margin-bottom: 1.75rem;
 }
 .heroSection .container .title,
-.heroSection .container .image {
+.heroSection .container .image-hero {
   flex: 1;
 }
 .heroSection .container .title {
@@ -271,13 +271,14 @@ p {
   margin-top: 1.5rem;
   max-width: 600px;
 }
-.heroSection .container .image {
+.heroSection .container .image-hero {
   overflow: hidden;
 }
-.heroSection .container .image img {
+.heroSection .container .image-hero img {
   width: 100%;
   height: 100%;
 }
+
 .heroSection .details {
   display: flex;
   justify-content: space-between;
@@ -1350,4 +1351,4 @@ nav .hamburger {
   .resume-modal {
     z-index: 11;
   }
-} */
+} 
