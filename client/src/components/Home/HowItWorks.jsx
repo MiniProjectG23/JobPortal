@@ -2,13 +2,14 @@ import React from "react";
 import { FaUserPlus } from "react-icons/fa";
 import { MdFindInPage } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
-import './Home.css';
+import "./Home.css";
 
 const HowItWorks = () => {
   return (
-    <div className="howitworks-howitworks">
+    <div className="howitworks-section">
+      <div className="overlay"></div>
       <div className="container-howitworks">
-        <h3>How Job-Dekho Works</h3>
+        <h3 className="how-it-work-title">How Job-Dekho Works</h3>
         <div className="banner-howitworks">
           <div className="card-howitworks">
             <div className="content-howitworks">
@@ -17,7 +18,7 @@ const HowItWorks = () => {
                 <p>Create Account</p>
                 <p>Sign up to create your profile and access job opportunities or post job listings.</p>
               </div>
-              <button>Get Started</button>
+              <button className="how-it-work">Get Started</button>
             </div>
           </div>
           <div className="card-howitworks">
@@ -27,7 +28,7 @@ const HowItWorks = () => {
                 <p>Find a Job/Post a Job</p>
                 <p>Explore job openings that match your skills or find the right candidates for your vacancies.</p>
               </div>
-              <button>Explore Now</button>
+              <button className="how-it-work">Explore Now</button>
             </div>
           </div>
           <div className="card-howitworks">
@@ -37,7 +38,7 @@ const HowItWorks = () => {
                 <p>Apply For Job/Recruit Suitable Candidates</p>
                 <p>Apply to jobs that interest you or recruit the best talent for your organization.</p>
               </div>
-              <button>Apply Now</button>
+              <button className="how-it-work">Apply Now</button>
             </div>
           </div>
         </div>

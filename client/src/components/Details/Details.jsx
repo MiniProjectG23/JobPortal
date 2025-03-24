@@ -26,7 +26,8 @@ const Details = () => {
     const fetchDateTime = () => {
       const now = new Date();
       const date = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      const time = now.toTimeString().split(' ')[0];
+      const time = now.toTimeString().split(' ')[0].slice(0, 5);
+
       setDateTime({ date, time });
     };
 

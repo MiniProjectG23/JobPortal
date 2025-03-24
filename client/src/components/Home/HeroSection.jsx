@@ -1,7 +1,6 @@
 import React from "react";
 import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus } from "react-icons/fa";
 import './Home.css';
-import herosection2 from './herosection2.jpg'
 
 const HeroSection = () => {
   const details = [
@@ -40,7 +39,7 @@ const HeroSection = () => {
           </p>
         </div>
         <div className="image-hero">
-          <img src={herosection2} alt="hero" />
+          <img src="./herosection2.png" alt="hero" />
         </div>
       </div>
       <div className="details-hero">
