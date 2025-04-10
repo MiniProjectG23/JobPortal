@@ -9,7 +9,7 @@ const HowItWorks = () => {
     <div className="howitworks-section">
       <div className="overlay"></div>
       <div className="container-howitworks">
-        <h3 className="how-it-work-title">How Job-Dekho Works</h3>
+        <h3 className="how-it-work-title">How JobRage Works</h3>
         <div className="banner-howitworks">
           <div className="card-howitworks">
             <div className="content-howitworks">

@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className={`footer ${isAuthorized ? "footerShow" : "footerHide"}`}>
       <div className="footerContent">
-        <div>&copy; All Rights Reserved By - Team Job Dekho ❤️</div>
+        <div>&copy; All Rights Reserved By - Team JobRage ❤️</div>
         <div className="connectText">Connect with us:</div>
         <div className="socialLinks">
           <Link to={"https://www.facebook.com/"} target="_blank" className="socialIcon facebook">

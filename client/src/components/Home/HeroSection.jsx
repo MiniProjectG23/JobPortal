@@ -34,7 +34,7 @@ const HeroSection = () => {
     <div className="heroSection-hero">
       <div className="container-hero">
         <div className="title-hero">
-          <h1>Unlock Your <br/>Dream Career <br/> with <span className="herosection-title">Job Dekho</span></h1>
+          <h1>Unlock Your <br/>Dream Career <br/> with <span className="herosection-title">Job Rage</span></h1>
           <p>
             Discover Oppurtunities, Connect with People, And Take the next step towards fullfiling work life.
           </p>

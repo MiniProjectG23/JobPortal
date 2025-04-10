@@ -53,7 +53,7 @@
   justify-content: center;
   width: 180px;
   padding: 10px;
-  background-color: #f9a692;
+  background-color: linear-gradient(to right, #44075a, #c57bfe);
   color: rgb(255, 255, 255);
   border-radius: 25px;
   position: absolute;
@@ -66,6 +66,7 @@
 .details-panel p {
   margin: 2px 0;
   font-size: 15px;
+  color: white;
 }
 
 

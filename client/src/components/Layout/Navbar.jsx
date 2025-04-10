@@ -3,8 +3,6 @@ import { Context } from "../../main";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FiX } from "react-icons/fi";
 import logo from "./bg-logo-main.png";
 import "./Navbar.css";
 
