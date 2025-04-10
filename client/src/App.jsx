@@ -18,6 +18,7 @@ import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 import Chatbot from "./components/Chatbot/Chatbot";
 import Details from "./components/Details/Details"; // Import the Details component
+import ResumeUpload from "./ResumeUpload";
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/job/post" element={<PostJob />} />
           <Route path="/job/me" element={<MyJobs />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/resume" element={<ResumeUpload/>} />
         </Routes>
         <Footer />
         <Toaster />
