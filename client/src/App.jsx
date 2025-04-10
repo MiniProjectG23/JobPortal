@@ -18,7 +18,7 @@ import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 import Chatbot from "./components/Chatbot/Chatbot";
 import Details from "./components/Details/Details"; // Import the Details component
-import ResumeUpload from "./ResumeUpload";
+import ResumeUpload from "./components/ResumeATS/ResumeUpload";
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);

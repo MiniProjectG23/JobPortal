@@ -36,12 +36,7 @@ const PopularCategories = () => {
       subTitle: "1000+ Open Postions",
       icon: <FaReact />,
     },
-    {
-      id: 5,
-      title: "Artificial Intelligence",
-      subTitle: "867 Open Positions",
-      icon: <GiArtificialIntelligence />,
-    },
+  
     
   ];
   return (

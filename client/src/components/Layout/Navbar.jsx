@@ -64,6 +64,10 @@ const Navbar = () => {
           <li>
             <Link to="/" onClick={() => setShowMenu(false)}>Mock Interview</Link>
           </li>
+
+          <li>
+            <Link to="/resume" onClick={() => setShowMenu(false)}>Resume ATS</Link>
+          </li>
         </ul>
       </div>
         {/* Logout Button (Right) */}
