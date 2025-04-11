@@ -29,51 +29,35 @@ const Navbar = () => {
   return (
     <nav className="topnav">
       <div className="nav-container">
-        {/* Logo (Left) */}
-        <Link to="/" className="logo">
-          <img src={logo} alt="JobDekho" />
-        </Link>
+        {/* Left: Logo */}
+        <div className="nav-left">
+          <Link to="/" className="logo">
+            <img src={logo} alt="JobDekho" />
+          </Link>
+        </div>
 
-      
-        <ul className={showMenu ? "nav-links show" : "nav-links"}>
-          <li>
-            <Link to="/" onClick={() => setShowMenu(false)}>HOME</Link>
-          </li>
-          <li>
-            <Link to="/job/getall" onClick={() => setShowMenu(false)}>ALL JOBS</Link>
-          </li>
-          <li>
-            <Link to="/applications/me" onClick={() => setShowMenu(false)}>
-              {user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}
-            </Link>
-          </li>
+        {/* Center: Navigation Links */}
+        <ul className="nav-links">
+          <li><Link to="/">HOME</Link></li>
+          <li><Link to="/job/getall">ALL JOBS</Link></li>
+          <li><Link to="/applications/me">{user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}</Link></li>
           {user?.role === "Employer" && (
             <>
-              <li>
-                <Link to="/job/post" onClick={() => setShowMenu(false)}>POST NEW JOB</Link>
-              </li>
-              <li>
-                <Link to="/job/me" onClick={() => setShowMenu(false)}>VIEW YOUR JOBS</Link>
-              </li>
-              
+              <li><Link to="/job/post">POST NEW JOB</Link></li>
+              <li><Link to="/job/me">VIEW YOUR JOBS</Link></li>
             </>
           )}
-          
-          <li>
-            <Link to="/" onClick={() => setShowMenu(false)}>Mock Interview</Link>
-          </li>
-
-          <li>
-            <Link to="/resume" onClick={() => setShowMenu(false)}>Resume ATS</Link>
-          </li>
+          <li><Link to="/">Mock Interview</Link></li>
+          <li><Link to="/resume">Resume ATS</Link></li>
         </ul>
-      </div>
-        {/* Logout Button (Right) */}
+
+        {/* Right: Logout */}
         {isAuthorized && (
-          <div className="logout-container">
+          <div className="nav-right">
             <button className="logoutButton" onClick={handleLogout}>LOGOUT</button>
           </div>
         )}
+      </div>
     </nav>
   );
 };
