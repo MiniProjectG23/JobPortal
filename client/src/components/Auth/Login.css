@@ -1,37 +1,35 @@
-/* Login.css */
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 
 .loginPage {
   display: flex;
-  min-height: 100vh;
-  align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: url(https://i.pinimg.com/736x/97/52/97/975297c7d72ae1e2d81026be4adeb6bd.jpg);
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center;
 }
+
 
 .loginContainer {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  animation: fadeInUp 1s ease;
+  background: rgba(255, 255, 255, 0.221);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.8s ease-out;
 }
 
-.loginHeader {
+.loginHeader h3 {
   text-align: center;
-  margin-bottom: 20px;
-}
-
-.loginLogo {
-  width: 100px;
-  margin-bottom: 10px;
+  font-size: 24px;
+  color: #f7f7f7;
+  margin-bottom: 25px;
+  font-weight: 700;
 }
 
 .loginForm {
@@ -39,14 +37,14 @@
 }
 
 .loginInputTag {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .loginInputTag label {
   display: block;
-  margin-bottom: 5px;
-  color: #333;
+  color: #fafafa;
   font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .loginInputDiv {
@@ -55,88 +53,75 @@
 
 .loginInput,
 .loginSelect {
-  width: calc(100% - 30px);
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  outline: none;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #0a0a0a;
+  font-size: 15px;
   transition: all 0.3s ease;
-  font-size: 14px;
+  padding-right: 40px;
+}
+
+.loginInput::placeholder {
+  color: #000000;
 }
 
 .loginInput:focus,
 .loginSelect:focus {
-  border-color: #ff7e5f;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.loginSelect {
+  appearance: none;
 }
 
 .loginIcon {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #ff7e5f;
+  color: #fff;
+  pointer-events: none;
 }
 
 .loginButton {
   width: 100%;
-  padding: 12px 0;
-  background: #ff7e5f;
+  background: #ffffff;
+  color: #8e44ad;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: 700;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  margin-top: 10px;
+  transition: 0.3s ease;
 }
 
 .loginButton:hover {
-  background: #feb47b;
+  background: #f1f1f1;
 }
 
 .loginLink {
   display: block;
-  margin-top: 10px;
   text-align: center;
-  color: #ff7e5f;
+  margin-top: 15px;
+  color: #fff;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-size: 14px;
+  transition: 0.3s ease;
 }
 
 .loginLink:hover {
-  color: #feb47b;
-}
-
-.loginBanner {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .loginContainer {
-    flex-direction: row;
-  }
-
-  .loginForm {
-    width: 50%;
-    padding: 20px;
-  }
-
-  .loginBanner {
-    display: block;
-    width: 50%;
-    background: url('/login.png') no-repeat center center/cover;
-    animation: slideInRight 1s ease;
-  }
-
-  .loginBannerImage {
-    display: none;
-  }
+  color: #ddd;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(25px);
   }
   to {
     opacity: 1;
@@ -144,13 +129,8 @@
   }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+@media (max-width: 500px) {
+  .loginContainer {
+    padding: 30px 20px;
   }
 }

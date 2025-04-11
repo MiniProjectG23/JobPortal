@@ -1,5 +1,6 @@
 .topnav {
   width: 100%;
+  height: 50px;
   background: linear-gradient(90deg, #2e034bf8, #a855f7); /* Softer purple gradient */
   display: flex;
   justify-content: center;
