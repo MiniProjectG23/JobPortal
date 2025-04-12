@@ -5,7 +5,7 @@ import {
   jobseekerGetAllApplications,
   postApplication,
   applicationStatus, // Import the new controller
-} from "../controllers/applicationController.js";
+} from "../contollers/applicationController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
