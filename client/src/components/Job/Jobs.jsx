@@ -19,6 +19,7 @@ const Jobs = () => {
         })
         .then((res) => {
           setJobs(res.data);
+          console.log(res.data);
         });
     } catch (error) {
       console.log(error);
