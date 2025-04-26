@@ -2,7 +2,7 @@ import {asynchandler} from "../utils/asynchandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {User} from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
 
 const generateAccessandRefreshToken=  async(userId)=>{
     try{
@@ -140,4 +140,18 @@ const getCurrentUser= asynchandler(async (req, res) => {
    .json(new ApiResponse(req.user, 200, "User fetched successfully"))
 })
 
-export {registerUser,loginUser,logoutUser,changeCurrentPassword,getCurrentUser}
+const resumeUpload= asynchandler(async (req, res) => {
+    const resumeFilePath= req.files?.resume[0]?.path;
+    if(!resumeFilePath){
+      throw new ApiError("Please upload resume", 400)
+  }
+
+ const yourResume= await uploadOnCloudinary(resumeFilePath);
+    if(!yourResume){
+        throw new ApiError("Error uploading resume", 500)
+    }
+
+    return res.status(200).json(new ApiResponse({ message: "Resume uploaded successfully",data : yourResume.url }, 200, "Resume uploaded successfully"));
+  });
+
+export {resumeUpload,registerUser,loginUser,logoutUser,changeCurrentPassword,getCurrentUser}
