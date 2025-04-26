@@ -8,6 +8,7 @@ import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.js";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
+import cloudinary from "cloudinary";
 
 const app = express();
 dotenv.config({
@@ -28,13 +29,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp/",
+    createParentPath:true,
   })
 );
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
+
 dbConnection();
 
 app.use(errorMiddleware);

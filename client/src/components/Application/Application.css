@@ -1,0 +1,177 @@
+.application-applicationform {
+  background: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  padding: 1.5rem;
+}
+
+.container-applicationform {
+  background: rgba(249, 249, 249, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 15px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  max-width: 500px;
+  color: white;
+  box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.37);
+}
+
+.heading-applicationform {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.subheading-applicationform {
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  color: black;
+}
+
+.form-applicationform {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.label-applicationform {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.input-applicationform,
+.textarea-applicationform,
+select {
+  padding: 0.6rem 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: black;
+  width: 100%;
+  font-size: 0.95rem;
+  transition: 0.3s ease;
+}
+
+.input-applicationform::placeholder,
+.textarea-applicationform::placeholder {
+  color: black;
+}
+
+.input-applicationform:focus,
+.textarea-applicationform:focus,
+select:focus {
+  outline: none;
+  border: 2px solid #4f1964;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.input-applicationform:focus::placeholder,
+.textarea-applicationform:focus::placeholder {
+  color: #4f1964;
+}
+
+.textarea-applicationform {
+  resize: none;
+  height: 100px;
+}
+
+.file-input-applicationform {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.file-label-applicationform {
+  background-color: white;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+  transition: 0.3s ease;
+}
+
+.file-label-applicationform:hover {
+  background-color: #4f1964;
+  color: black;
+}
+
+.file-hidden {
+  display: none;
+}
+
+.file-name-applicationform {
+  font-size: 0.85rem;
+  color: black;
+}
+
+.button-group-applicationform {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.submit-button-applicationform {
+  background: linear-gradient(to right, #4f1964, #784ba0);
+  color: black;
+  padding: 0.6rem 1.6rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.submit-button-applicationform:hover {
+  background: linear-gradient(to right, #4f1964, #2b1055);
+  transform: scale(1.05);
+}
+
+.loader-applicationform {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.spinner-applicationform {
+  width: 40px;
+  height: 40px;
+  border: 4px solid white;
+  border-top: 4px solid #7597de;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .container-applicationform {
+    padding: 1rem;
+  }
+
+  .button-group-applicationform {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .submit-button-applicationform {
+    width: 100%;
+  }
+}
