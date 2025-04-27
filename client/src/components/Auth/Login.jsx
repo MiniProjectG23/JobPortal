@@ -40,8 +40,11 @@ const Login = () => {
   
       toast.success(data.message);
       setUser(data.data.user);
-      console.log("In Login: ",user);
+      // console.log("In Login: ",user);
       setIsAuthorized(true);
+      localStorage.setItem("user", JSON.stringify(data.data.user)); // Save user info in localStorage
+localStorage.setItem("isAuthorized", true); // Indicate that the user is logged in
+
       setEmail("");
       setPassword("");
       setRole("");
@@ -55,6 +58,7 @@ const Login = () => {
   
 
   if (isAuthorized) return <Navigate to="/" />;
+  // Or if you want to go to the previous page they were on:
 
   return (
     <section className="loginPage">

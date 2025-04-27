@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
  import userRouter from './routes/user.routes.js';
  import jobRouter from './routes/job.routes.js';
 import applicationRouter from './routes/application.routes.js';
-
+import fileUpload from "express-fileupload";
 const app = express();
 
 // Middleware
@@ -19,6 +19,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/' 
+  }));
 
 // Test route
 app.get('/', (req, res) => {

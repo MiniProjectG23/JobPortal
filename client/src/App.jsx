@@ -19,30 +19,20 @@ import MyJobs from "./components/Job/MyJobs";
 import Chatbot from "./components/Chatbot/Chatbot";
 import Details from "./components/Details/Details"; // Import the Details component
 import ResumeUpload from "./components/ResumeATS/ResumeUpload";
-
+import { Navigate } from "react-router-dom";
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/v1/user/getuser",
-          {
-            withCredentials: true,
-          }
-        );
-        setIsAuthorized(true);
-        setUser(response.data.user);
-        console.log("In app.jsx")
-        console.log(response.data.user);
-      } catch (error) {
-        setIsAuthorized(false);
-      }
-    };
-    fetchUser();
-  }, [setUser, setIsAuthorized]); 
-
+    const user = JSON.parse(localStorage.getItem("user"));
+    const isAuthorized = localStorage.getItem("isAuthorized") === "true";
+  
+    if (user && isAuthorized) {
+      setUser(user);
+      setIsAuthorized(true);
+    }
+  }, [setUser, setIsAuthorized]);
+  
   return (
     <>
       <BrowserRouter>
@@ -50,7 +40,8 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={isAuthorized ? <Home /> : <Navigate to="/login" />} />
+
           <Route path="/job/getall" element={<Jobs />} />
           <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/application/:id" element={<Application />} />

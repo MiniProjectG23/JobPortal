@@ -18,7 +18,8 @@ const JobDetails = () => {
         withCredentials: true,
       })
       .then((res) => {
-        setJob(res.data.job);
+        console.log(res);
+        setJob(res.data.data);
       })
       .catch((error) => {
         navigateTo("/notfound");

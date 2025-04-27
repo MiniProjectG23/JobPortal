@@ -2,6 +2,8 @@
 /* Topnav - Main Navbar Styling */
 /* ============================= */
 
+
+
 .topnav {
   width: 100%;
   background: linear-gradient(90deg, #2e034bf8, #a855f7);
@@ -68,7 +70,32 @@
 /* ============================= */
 /* Logout Section (Right)       */
 /* ============================= */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
+.welcome-message {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.greeting {
+  color: #ff0099; /* Green color for the greeting */
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.user-name {
+  color: #ffffff; /* Dark color for the username */
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: capitalize; /* Capitalizes the first letter of the name */
+}
 .logout-container {
   display: flex;
   justify-content: flex-end;

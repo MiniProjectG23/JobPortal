@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../main";
@@ -12,19 +12,33 @@ const Application = () => {
   const [address, setAddress] = useState("");
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // For form validation
 
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
 
-  const handleFileChange = (event) => {
-    const resume = event.target.files[0];
-    setResume(resume);
-  };
-
   const { id } = useParams();
 
+  // Handle file change
+  const handleFileChange = (event) => {
+    const uploadedFile = event.target.files[0];
+    if (uploadedFile && uploadedFile.type !== "application/pdf") {
+      setError("Please upload a PDF file.");
+      setResume(null); // Reset the file if it's invalid
+    } else {
+      setError("");
+      setResume(uploadedFile);
+    }
+  };
+
+  // Handle form submission
   const handleApplication = async (e) => {
     e.preventDefault();
+    if (!resume) {
+      setError("Please upload a valid resume.");
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData();
     formData.append("name", name);
@@ -46,12 +60,7 @@ const Application = () => {
           },
         }
       );
-      setName("");
-      setEmail("");
-      setCoverLetter("");
-      setPhone("");
-      setAddress("");
-      setResume(null);
+      resetForm(); // Clear form on success
       toast.success(data.message);
       navigateTo("/job/getall");
     } catch (error) {
@@ -61,18 +70,23 @@ const Application = () => {
     }
   };
 
-  const handleClear = () => {
+  // Clear form data
+  const resetForm = () => {
     setName("");
     setEmail("");
     setCoverLetter("");
     setPhone("");
     setAddress("");
     setResume(null);
+    setError("");
   };
 
-  if (!isAuthorized || (user && user.role === "Employer")) {
-    navigateTo("/");
-  }
+  // Redirect if not authorized or user is an employer
+  useEffect(() => {
+    if (!isAuthorized || (user && user.role === "Employer")) {
+      navigateTo("/");
+    }
+  }, [isAuthorized, user, navigateTo]);
 
   return (
     <section className="application-applicationform">
@@ -124,16 +138,34 @@ const Application = () => {
             className="textarea-applicationform"
           />
           <div className="file-input-applicationform">
-            <label className="file-label-applicationform">Select Resume</label>
+            <label
+              htmlFor="resume-upload"
+              className="file-label-applicationform"
+            >
+              Select Resume
+            </label>
             <input
+              id="resume-upload"
               type="file"
-              accept=".pdf, .jpg, .png"
+              accept=".pdf"
               onChange={handleFileChange}
               className="file-applicationform"
             />
+            {/* Show selected file name if resume is selected */}
+            {resume && (
+              <p className="file-name-applicationform">
+                Selected File: {resume.name}
+              </p>
+            )}
           </div>
+
+          {error && <p className="error-message">{error}</p>}
           <div className="button-group-applicationform">
-            <button type="button" onClick={handleClear} className="clear-button-applicationform">
+            <button
+              type="button"
+              onClick={resetForm}
+              className="clear-button-applicationform"
+            >
               Clear
             </button>
             <button type="submit" className="submit-button-applicationform">

@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
-import cloudinary from "cloudinary";
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
 
 // Submit a new application
 export const postApplication = asynchandler(async (req, res) => {
@@ -18,17 +18,21 @@ export const postApplication = asynchandler(async (req, res) => {
   }
 
   const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+  const allowedFormats = ["application/pdf"];
 
   if (!allowedFormats.includes(resume.mimetype)) {
-    throw new ApiError("Invalid file type. Only PNG, JPEG, or WEBP allowed.", 400);
+    throw new ApiError("Invalid file type. Only PDF files are allowed.", 400);
   }
 
-  const cloudinaryResponse = await cloudinary.uploader.upload(resume.tempFilePath);
+  const resumeFilePath = resume.tempFilePath;
+  if (!resumeFilePath) {
+    throw new ApiError("Please upload resume", 400);
+  }
 
-  if (!cloudinaryResponse || cloudinaryResponse.error) {
-    console.error("Cloudinary Error:", cloudinaryResponse.error || "Unknown error");
-    throw new ApiError("Failed to upload resume to Cloudinary", 500);
+  const uploadedResume = await uploadOnCloudinary(resumeFilePath, "raw");
+
+  if (!uploadedResume) {
+    throw new ApiError("Error uploading resume", 500);
   }
 
   const { name, email, coverLetter, phone, address, jobId } = req.body;
@@ -51,14 +55,13 @@ export const postApplication = asynchandler(async (req, res) => {
     applicantID: { user: userId, role: "Job Seeker" },
     employerID: { user: jobDetails.postedBy, role: "Employer" },
     resume: {
-      public_id: cloudinaryResponse.public_id,
-      url: cloudinaryResponse.secure_url,
+      public_id: uploadedResume.public_id,
+      url: uploadedResume.secure_url,
     },
   });
 
   return res.status(201).json(new ApiResponse(application, 201, "Application submitted"));
 });
-
 // Employer gets all received applications
 export const employerGetAllApplications = asynchandler(async (req, res) => {
   const { role, _id } = req.user;

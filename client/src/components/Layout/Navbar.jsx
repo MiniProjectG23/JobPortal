@@ -8,24 +8,25 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
-  const [showMenu, setShowMenu] = useState(false);
   const { isAuthorized, setIsAuthorized, user } = useContext(Context);
-  console.log("In NavBar");
-  console.log(user);
+
   const handleLogout = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/user/logout",{} ,{
-        withCredentials: true,
-      });
-      toast.success(response.data.message);
+      await axios.post("http://localhost:4000/api/v1/user/logout", {}, { withCredentials: true });
+      toast.success("Logged out successfully.");
+  
+      // Clear user-related data
+      localStorage.removeItem("user");
+      localStorage.removeItem("isAuthorized");
+  
       setIsAuthorized(false);
-      sessionStorage.removeItem("greetingShown");
-      navigate("/login");
+      setUser(null); // Clear user from context
+      navigate("/login"); // Redirect to login page
     } catch (error) {
-      toast.error(error.response?.data?.message || "Logout failed");
+      toast.error("Logout failed");
     }
   };
+  
 
   return (
     <nav className="topnav">
@@ -41,9 +42,9 @@ const Navbar = () => {
         <ul className="nav-links">
           <li><Link to="/">HOME</Link></li>
           <li><Link to="/job/getall">ALL JOBS</Link></li>
-          <li><Link to="/applications/me">{user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}</Link>
-          </li>
-          {/* console.log(user.role); */}
+          <li><Link to="/applications/me">{user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}</Link></li>
+
+          {/* Conditional Links for Employer */}
           {user?.role === "Employer" && (
             <>
               <li><Link to="/job/post">POST NEW JOB</Link></li>
@@ -55,11 +56,16 @@ const Navbar = () => {
         </ul>
 
         {/* Right: Logout */}
-        {isAuthorized && (
-          <div className="nav-right">
-            <button className="logoutButton" onClick={handleLogout}>LOGOUT</button>
-          </div>
-        )}
+        {isAuthorized && user && (
+  <div className="nav-right">
+      <div className="welcome-message">
+      <span className="greeting">Welcome,</span>
+      <span className="user-name">{user.name}</span>
+    </div>
+    <button className="logoutButton" onClick={handleLogout}>LOGOUT</button>
+  </div>
+)}
+
       </div>
     </nav>
   );
