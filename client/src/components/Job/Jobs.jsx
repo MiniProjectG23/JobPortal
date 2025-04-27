@@ -12,29 +12,31 @@ const Jobs = () => {
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    try {
-      axios
-        .get("http://localhost:4000/api/v1/job/getall", {
-          withCredentials: true,
-        })
-        .then((res) => {
-          setJobs(res.data);
-          console.log(res.data);
-        });
-    } catch (error) {
-      console.log(error);
+    if (!isAuthorized) {
+      navigateTo("/");  // redirect immediately if not authorized
+      return;  // ensure the rest of the effect doesn't run
     }
-  }, []);
 
-  if (!isAuthorized) {
-    navigateTo("/");
-  }
+    const fetchJobs = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/job/getall", {
+          withCredentials: true,
+        });
+        setJobs(res.data);
+        console.log("in all jobs : ", res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchJobs();
+  }, [isAuthorized, navigateTo]);  // Add dependencies to re-trigger effect when authorization status changes
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  const filteredJobs = jobs.jobs?.filter((job) =>
+  const filteredJobs = jobs.data?.filter((job) =>
     job.title.toLowerCase().includes(search.toLowerCase())
   );
 

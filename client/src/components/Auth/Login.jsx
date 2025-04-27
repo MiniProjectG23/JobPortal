@@ -18,12 +18,15 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("In handle Login");
     if (!role) {
       toast.error("Please select a role.");
       return;
     }
-
+    if (!email || !password) {
+      toast.error("Please fill out all fields.");
+      return;
+    }
+  
     setLoading(true);
     try {
       const { data } = await axios.post(
@@ -34,19 +37,22 @@ const Login = () => {
           withCredentials: true,
         }
       );
-
+  
       toast.success(data.message);
-      setUser(data.user); 
-      setIsAuthorized(true); 
+      setUser(data.data.user);
+      console.log("In Login: ",user);
+      setIsAuthorized(true);
       setEmail("");
       setPassword("");
       setRole("");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      const errorMessage = error.response?.data?.message || error.message || "Login failed";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (isAuthorized) return <Navigate to="/" />;
 

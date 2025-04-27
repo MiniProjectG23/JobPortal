@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { Context } from "./main";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -32,21 +32,23 @@ const App = () => {
             withCredentials: true,
           }
         );
-        setUser(response.data.user);
         setIsAuthorized(true);
+        setUser(response.data.user);
+        console.log("In app.jsx")
+        console.log(response.data.user);
       } catch (error) {
         setIsAuthorized(false);
       }
     };
     fetchUser();
-  }, [isAuthorized, setUser, setIsAuthorized]);
+  }, [setUser, setIsAuthorized]); 
 
   return (
     <>
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/job/getall" element={<Jobs />} />
@@ -56,7 +58,7 @@ const App = () => {
           <Route path="/job/post" element={<PostJob />} />
           <Route path="/job/me" element={<MyJobs />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/resume" element={<ResumeUpload/>} />
+          <Route path="/resume" element={<ResumeUpload />} />
         </Routes>
         <Footer />
         <Toaster />

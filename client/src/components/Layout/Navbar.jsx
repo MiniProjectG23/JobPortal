@@ -7,10 +7,12 @@ import logo from "./bg-logo-main.png";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const [showMenu, setShowMenu] = useState(false);
   const { isAuthorized, setIsAuthorized, user } = useContext(Context);
-  const navigateTo = useNavigate();
-
+  console.log("In NavBar");
+  console.log(user);
   const handleLogout = async () => {
     try {
       const response = await axios.post("http://localhost:4000/api/v1/user/logout",{} ,{
@@ -19,7 +21,7 @@ const Navbar = () => {
       toast.success(response.data.message);
       setIsAuthorized(false);
       sessionStorage.removeItem("greetingShown");
-      navigateTo("/login");
+      navigate("/login");
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }
@@ -39,7 +41,9 @@ const Navbar = () => {
         <ul className="nav-links">
           <li><Link to="/">HOME</Link></li>
           <li><Link to="/job/getall">ALL JOBS</Link></li>
-          <li><Link to="/applications/me">{user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}</Link></li>
+          <li><Link to="/applications/me">{user?.role === "Employer" ? "APPLICANT'S APPLICATIONS" : "MY APPLICATIONS"}</Link>
+          </li>
+          {/* console.log(user.role); */}
           {user?.role === "Employer" && (
             <>
               <li><Link to="/job/post">POST NEW JOB</Link></li>

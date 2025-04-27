@@ -21,7 +21,8 @@ const MyJobs = () => {
           "http://localhost:4000/api/v1/job/getmyjobs",
           { withCredentials: true }
         );
-        setMyJobs(data.myJobs);
+        console.log(data);
+        setMyJobs(data.data);
       } catch (error) {
         toast.error(error.response.data.message);
         setMyJobs([]);
