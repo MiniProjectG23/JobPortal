@@ -29,12 +29,12 @@ function ResumeUpload() {
         }
 
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("resume", file);
         formData.append("job_desc", jobDesc);
         formData.append("mode", mode);
 
         try {
-            const response = await fetch("http://localhost:8000/analyze_resume/", {
+            const response = await fetch("http://localhost:4000/api/v1/user/resume", {
                 method: "POST",
                 body: formData
             });
