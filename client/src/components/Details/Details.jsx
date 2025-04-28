@@ -7,7 +7,8 @@ const Details = () => {
   const [activeDetail, setActiveDetail] = useState(null);
   const [location, setLocation] = useState({ state: '', country: '' });
   const [dateTime, setDateTime] = useState({ date: '', time: '' });
-  const { user } = useContext(Context);
+  const {user} = useContext(Context);
+  console.log("In details : ",user);
 
   useEffect(() => {
     const fetchLocation = async () => {

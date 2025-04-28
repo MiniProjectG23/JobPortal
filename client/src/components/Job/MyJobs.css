@@ -2,88 +2,110 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 40px 20px;
+  font-family: 'Poppins', 'Arial', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #9b5de5, #631e94);
+  margin-top: 2%;
 }
 
 .container-myjobs {
   width: 100%;
-  max-width: 800px;
-  background: #f4f4f4;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 2px solid black; /* Stylish black border */
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .myjobs-header {
-  color: #ff7e5f;
+  color: white;
   text-align: center;
-  margin-bottom: 20px;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .banner-myjobs {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
 }
 
 .card-myjobs {
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 25px;
   width: 100%;
-  border: 2px solid #ff7e5f; /* Border same as label color */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-myjobs:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .content-myjobs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .short_fields-myjobs,
 .long_field-myjobs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .short_fields-myjobs div,
 .long_field-myjobs div {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .short_fields-myjobs span,
 .long_field-myjobs span {
-  color: #ff7e5f;
-  min-width: 150px; /* Increased the size of the labels */
-  font-size: 16px; /* Increased the font size of the labels */
-  font-weight: bold;
+  color: #ffffff;
+  min-width: 160px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .short_fields-myjobs input,
 .long_field-myjobs textarea,
 .short_fields-myjobs select {
-  width: calc(100% - 150px); /* Adjusted width to match new label size */
-  padding: 10px; /* Increased height of the input */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px; /* Increased font size of the inputs */
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  transition: background 0.3s;
+}
+
+.short_fields-myjobs input:focus,
+.long_field-myjobs textarea:focus,
+.short_fields-myjobs select:focus {
+  background: #ffffff;
 }
 
 .long_field-myjobs textarea {
-  height: 100px; /* Increased height of the textarea */
-  /* Removed resize: none; to allow resizing */
+  height: 120px;
+  resize: vertical;
 }
 
 .button_wrapper-myjobs {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .edit_btn-myjobs,
@@ -92,50 +114,33 @@
 .delete_btn-myjobs {
   border: none;
   color: white;
-  padding: 10px 0;
-  border-radius: 20px;
+  padding: 12px 0;
+  border-radius: 30px;
   cursor: pointer;
-  font-size: 14px;
-  width: 150px;
+  font-size: 15px;
+  width: 48%;
   text-align: center;
+  background: linear-gradient(135deg, #9b5de5, #6a0dad);
+  transition: background 0.3s, transform 0.3s;
 }
 
-.edit_btn-myjobs,
-.delete_btn-myjobs{
-  margin-left: 0px;
-}
-.edit_btn_wrapper-myjobs{
-  width: 50%;
-  display: flex;
-}
-
-.edit_btn-myjobs {
-  background-color: green;
-}
-
-.edit_btn-myjobs:hover {
-  background-color: darkgreen;
-}
-
-.delete_btn-myjobs {
-  background-color: red;
-}
-
+.edit_btn-myjobs:hover,
+.check_btn-myjobs:hover,
+.cross_btn-myjobs:hover,
 .delete_btn-myjobs:hover {
-  background-color: darkred;
+  background: linear-gradient(135deg, #6a0dad, #4b0082);
+  transform: scale(1.05);
 }
 
-.check_btn-myjobs {
-  background-color: #4caf50;
-  margin-right: 5px;
-}
-
-.cross_btn-myjobs {
-  background-color: #f44336;
+.edit_btn_wrapper-myjobs {
+  width: 100%;
+  display: flex;
+  gap: 10px;
 }
 
 .no-jobs-message-myjobs {
   text-align: center;
-  color: #999;
-  font-size: 18px;
+  color: #eee;
+  font-size: 20px;
+  margin-top: 20px;
 }

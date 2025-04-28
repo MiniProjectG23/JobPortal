@@ -14,6 +14,7 @@ const Application = () => {
   const [address, setAddress] = useState("");
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // For form validation
 
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
@@ -25,32 +26,24 @@ const Application = () => {
     }
   }, [isAuthorized, user, navigateTo]);
 
+
+  // Handle file change
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.type === "application/pdf") {
-        setResume(file);
-        console.log("set resume");
-      } else {
-        toast.error("Please upload a valid PDF file.");
-      }
+    const uploadedFile = event.target.files[0];
+    if (uploadedFile && uploadedFile.type !== "application/pdf") {
+      setError("Please upload a PDF file.");
+      setResume(null); // Reset the file if it's invalid
     } else {
-      toast.error("No file selected.");
+      setError("");
+      setResume(uploadedFile);
     }
-    console.log(file);
   };
 
+  // Handle form submission
   const handleApplication = async (e) => {
     e.preventDefault();
-
-    // Validate form fields
-    if (!name || !email || !phone || !address || !coverLetter) {
-      toast.error("Please fill all the fields.");
-      return;
-    }
-
     if (!resume) {
-      toast.error("Please upload your resume (PDF format).");
+      setError("Please upload a valid resume.");
       return;
     }
 
@@ -79,17 +72,7 @@ const Application = () => {
           withCredentials: true, 
         }
       );
-      
-      
-      console.log("Post request in frontened");
-      
-      // Reset fields
-      setName("");
-      setEmail("");
-      setCoverLetter("");
-      setPhone("");
-      setAddress("");
-      setResume(null);
+      resetForm(); // Clear form on success
       toast.success(data.message);
       
       navigateTo("/job/getall");
@@ -101,14 +84,23 @@ const Application = () => {
     
   };
 
-  const handleClear = () => {
+  // Clear form data
+  const resetForm = () => {
     setName("");
     setEmail("");
     setCoverLetter("");
     setPhone("");
     setAddress("");
     setResume(null);
+    setError("");
   };
+
+  // Redirect if not authorized or user is an employer
+  useEffect(() => {
+    if (!isAuthorized || (user && user.role === "Employer")) {
+      navigateTo("/");
+    }
+  }, [isAuthorized, user, navigateTo]);
 
   return (
     <section className="application-applicationform">
@@ -171,28 +163,32 @@ const Application = () => {
           />
 
           <div className="file-input-applicationform">
-            <label htmlFor="resumeUpload" className="file-label-applicationform">
-              Upload Resume (PDF)
+            <label
+              htmlFor="resume-upload"
+              className="file-label-applicationform"
+            >
+              Select Resume
             </label>
             <input
-              id="resumeUpload"
-              name="resume"
+              id="resume-upload"
               type="file"
               accept=".pdf"
               onChange={handleFileChange}
               className="file-hidden"
             />
+            {/* Show selected file name if resume is selected */}
             {resume && (
               <p className="file-name-applicationform">
-                Selected: {resume.name.length > 20 ? `${resume.name.slice(0, 20)}...` : resume.name}
+                Selected File: {resume.name}
               </p>
             )}
           </div>
 
+          {error && <p className="error-message">{error}</p>}
           <div className="button-group-applicationform">
             <button
               type="button"
-              onClick={handleClear}
+              onClick={resetForm}
               className="clear-button-applicationform"
             >
               Clear

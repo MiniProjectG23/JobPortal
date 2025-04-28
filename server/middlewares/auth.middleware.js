@@ -4,9 +4,10 @@ import jwt from "jsonwebtoken";
 import {User} from "../models/user.model.js";
 
 export const verifyJWT = asynchandler(async (req, _, next) => {
-    
+    console.log("In auth middleware")
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+
         console.log("Token received:", token);
 
         if (!token) {

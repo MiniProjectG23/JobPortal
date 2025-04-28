@@ -1,4 +1,3 @@
-
 import { asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -7,6 +6,7 @@ import { Job } from "../models/job.model.js";
 // Get all active jobs
 export const getAllJobs = asynchandler(async (req, res) => {
   const jobs = await Job.find({ expired: false });
+  console.log(jobs);
   return res.status(200).json(new ApiResponse(jobs, 200, "Jobs fetched successfully"));
 });
 
@@ -69,7 +69,7 @@ export const getMyJobs = asynchandler(async (req, res) => {
   }
 
   const myJobs = await Job.find({ postedBy: userId });
-
+  // console.log(myJobs);
   return res.status(200).json(new ApiResponse(myJobs, 200, "My Jobs fetched successfully"));
 });
 

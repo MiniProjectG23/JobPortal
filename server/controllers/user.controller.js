@@ -48,6 +48,7 @@ const generateAccessandRefreshToken=  async(userId)=>{
   })
 
   const loginUser = asynchandler(async (req, res) => {
+  
     const { email, password, role } = req.body;
   
    
@@ -70,7 +71,8 @@ const generateAccessandRefreshToken=  async(userId)=>{
     if (!user) {
       throw new ApiError("User does not exist", 404);
     }
-    console.log(user)
+
+    // console.log(user);
 
     const validPass = await user.isPasswordCorrect(password);
     if (!validPass) {
@@ -89,7 +91,7 @@ const generateAccessandRefreshToken=  async(userId)=>{
       secure: true, 
     };
   
-   
+   console.log(loggedInUser);
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
@@ -136,6 +138,8 @@ const changeCurrentPassword= asynchandler(async (req, res) => {
 })
 
 const getCurrentUser= asynchandler(async (req, res) => {
+  // console.log("IN getCurrentUser");
+  // console.log(req.user);
    return res.status(200)
    .json(new ApiResponse(req.user, 200, "User fetched successfully"))
 })

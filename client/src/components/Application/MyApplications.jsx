@@ -4,6 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 const MyApplications = () => {
   const { user } = useContext(Context);
@@ -24,9 +26,14 @@ const MyApplications = () => {
             : "http://localhost:4000/api/v1/application/jobseeker/getall";
 
         const res = await axios.get(url, { withCredentials: true });
-        setApplications(res.data.applications);
+        // console.log(res.data.data);
+        setApplications(res.data.data || []);
       } catch (error) {
-        toast.error(error.response.data.message);
+        // Safe error handling
+        const errorMessage =
+          error.response?.data?.message ||
+          "Something went wrong. Please try again.";
+        toast.error(errorMessage);
       }
     };
 
@@ -48,7 +55,9 @@ const MyApplications = () => {
         prevApplications.filter((application) => application._id !== id)
       );
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to delete application.";
+      toast.error(errorMessage);
     }
   };
 
@@ -68,7 +77,9 @@ const MyApplications = () => {
         )
       );
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to update application status.";
+      toast.error(errorMessage);
     }
   };
 
@@ -85,7 +96,9 @@ const MyApplications = () => {
   return (
     <section className="my_applications page">
       <h1 className="heading-myapplication">
-        {user && user.role === "Job Seeker" ? "My Applications" : "Applications From Job Seekers"}
+        {user && user.role === "Job Seeker"
+          ? "My Applications"
+          : "Applications From Job Seekers"}
       </h1>
       <div className="container-myapplication">
         {applications.length <= 0 ? (
@@ -114,7 +127,11 @@ const MyApplications = () => {
         )}
       </div>
       {modalOpen && (
-        <ResumeModal imageUrl={resumeImageUrl} name={resumeName} onClose={closeModal} />
+        <ResumeModal
+          imageUrl={resumeImageUrl}
+          name={resumeName}
+          onClose={closeModal}
+        />
       )}
     </section>
   );
@@ -124,52 +141,10 @@ export default MyApplications;
 
 const JobSeekerCard = ({ element, deleteApplication, openModal, index }) => {
   return (
-    <div className={`job_seeker_card-myapplication ${element.accepted === 1 ? "accepted" : ""} ${element.accepted === 0 ? "rejected" : ""}`}>
-      <div className="number-tag">{index + 1}</div>
-      <div className="detail">
-        <p>
-          <span>Name:</span> {element.name}
-        </p>
-        <p>
-          <span>Email:</span> {element.email}
-        </p>
-        <p>
-          <span>Phone:</span> {element.phone}
-        </p>
-        <p>
-          <span>Address:</span> {element.address}
-        </p>
-        <p>
-          <span>CoverLetter:</span> {element.coverLetter}
-        </p>
-      </div>
-      <div className="resume-img">
-        <img
-          src={element.resume.url}
-          alt="resume"
-          onClick={() => openModal(element.resume.url, element.name)}
-        />
-      </div>
-      {/* <div className="btn_area">
-        <button onClick={() => deleteApplication(element._id)}>
-          Delete Application
-        </button>
-      </div> */}
-    </div>
-  );
-};
-
-const EmployerCard = ({ element, deleteApplication, updateApplicationStatus, openModal, index }) => {
-  const handleGmailClick = (email) => {
-    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${email}`;
-    window.open(mailtoLink, "_blank");
-  };
-
-  return (
     <div
-      className={`job_seeker_card-myapplication ${element.accepted === 1 ? "accepted" : ""} ${
-        element.accepted === 0 ? "rejected" : ""
-      }`}
+      className={`job_seeker_card-myapplication ${
+        element.accepted === 1 ? "accepted" : ""
+      } ${element.accepted === 0 ? "rejected" : ""}`}
     >
       <div className="number-tag">{index + 1}</div>
       <div className="detail">
@@ -190,18 +165,70 @@ const EmployerCard = ({ element, deleteApplication, updateApplicationStatus, ope
         </p>
       </div>
       <div className="resume-img">
-        <img
-          src={element.resume.url}
-          alt="resume"
+        <FontAwesomeIcon
+          icon={faFilePdf}
+          style={{ color: "#74148f", fontSize: "50px", cursor: "pointer" }}
+          onClick={() => window.open(element.resume.url, "_blank")}
+        />
+      </div>
+    </div>
+  );
+};
+
+const EmployerCard = ({
+  element,
+  deleteApplication,
+  updateApplicationStatus,
+  openModal,
+  index,
+}) => {
+  const handleGmailClick = (email) => {
+    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${email}`;
+    window.open(mailtoLink, "_blank");
+  };
+
+  return (
+    <div
+      className={`job_seeker_card-myapplication ${
+        element.accepted === 1 ? "accepted" : ""
+      } ${element.accepted === 0 ? "rejected" : ""}`}
+    >
+      <div className="number-tag">{index + 1}</div>
+      <div className="detail">
+        <p>
+          <span>Name:</span> {element.name}
+        </p>
+        <p>
+          <span>Email:</span> {element.email}
+        </p>
+        <p>
+          <span>Phone:</span> {element.phone}
+        </p>
+        <p>
+          <span>Address:</span> {element.address}
+        </p>
+        <p>
+          <span>CoverLetter:</span> {element.coverLetter}
+        </p>
+      </div>
+      <div className="resume-img">
+<div className="resume-img">
+        <FontAwesomeIcon
+          icon={faFilePdf}
+          style={{ color: "#74148f", fontSize: "50px", cursor: "pointer" }}
           onClick={() => openModal(element.resume.url, element.name)}
         />
+      </div>
         <p className="resume-name">{element.name.split(" ")[0]}'s Resume</p>
       </div>
       <div className="btn_area">
         {element.accepted === 1 ? (
           <>
             <button className="accepted-btn">Accepted</button>
-            <button className="gmail-btn" onClick={() => handleGmailClick(element.email)}>
+            <button
+              className="gmail-btn"
+              onClick={() => handleGmailClick(element.email)}
+            >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"
                 alt="Gmail"
@@ -213,10 +240,16 @@ const EmployerCard = ({ element, deleteApplication, updateApplicationStatus, ope
           <button className="rejected-btn">Rejected</button>
         ) : (
           <>
-            <button className="accept-btn" onClick={() => updateApplicationStatus(element._id, 1)}>
+            <button
+              className="accept-btn"
+              onClick={() => updateApplicationStatus(element._id, 1)}
+            >
               Accept Application
             </button>
-            <button className="reject-btn" onClick={() => updateApplicationStatus(element._id, 0)}>
+            <button
+              className="reject-btn"
+              onClick={() => updateApplicationStatus(element._id, 0)}
+            >
               Reject Application
             </button>
           </>

@@ -24,7 +24,6 @@ const ResumeModal = ({ imageUrl, name, onClose }) => {
           <AiOutlineClose size={24} />
         </button>
         <div className="content-container">
-          <img src={imageUrl} alt="resume" className="min-image" />
           <div className="modal-text-container">
             <p className="modal-resume-name">{name.split(' ')[0]}'s Resume</p>
             <button className="download-button" onClick={downloadResume}>
