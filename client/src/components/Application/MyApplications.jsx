@@ -212,11 +212,13 @@ const EmployerCard = ({
         </p>
       </div>
       <div className="resume-img">
-        <img
-          src={element.resume.url}
-          alt="resume"
+<div className="resume-img">
+        <FontAwesomeIcon
+          icon={faFilePdf}
+          style={{ color: "#74148f", fontSize: "50px", cursor: "pointer" }}
           onClick={() => openModal(element.resume.url, element.name)}
         />
+      </div>
         <p className="resume-name">{element.name.split(" ")[0]}'s Resume</p>
       </div>
       <div className="btn_area">
