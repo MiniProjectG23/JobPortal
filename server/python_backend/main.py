@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, Request
 import base64
 import os
 import io
@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pdf2image
 import google.generativeai as genai
 import markdown
+from chat import get_chat_response
 
 # Load environment variables
 load_dotenv()
@@ -69,3 +70,17 @@ async def analyze_resume(file: UploadFile = File(...), job_desc: str = Form(...)
 
     response = get_gemini_response(job_desc, pdf_content, prompt)
     return {"result": response}
+
+@app.post("/chatbot/")
+async def chatbot_api(request: Request):
+    body = await request.json()
+    user_message = body.get("user_input", "")
+    # print("Received user input:", user_message)  # Log user input
+    
+    if not user_message:
+        return {"error": "No message provided."}
+    
+    reply = get_chat_response(user_message)
+    # print("Generated bot reply:", reply)  # Log bot's reply
+    
+    return {"reply": reply}
