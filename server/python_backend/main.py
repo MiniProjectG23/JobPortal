@@ -61,9 +61,9 @@ async def analyze_resume(file: UploadFile = File(...), job_desc: str = Form(...)
     pdf_content = process_pdf(await file.read())
 
     if mode == "summary":
-        prompt = "You are an experienced HR Manager. Review the resume against the job description and provide a summary."
+        prompt = "You are an experienced HR Manager. Review the resume against the job description and provide a summary in short and concise way."
     elif mode == "match":
-        prompt = "You are an ATS scanner. Evaluate the resume against the job description and provide a match percentage."
+        prompt = "You are an ATS scanner. Evaluate the resume against the job description and provide a match percentage give response in short and concise way."
     else:
         return {"error": "Invalid mode"}
 
