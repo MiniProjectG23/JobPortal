@@ -3,7 +3,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { MdFindInPage } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import "./Home.css";
-
+import {Link} from "react-router-dom" 
 const HowItWorks = () => {
   return (
     <div className="howitworks-section">
@@ -18,7 +18,9 @@ const HowItWorks = () => {
                 <p>Create Account</p>
                 <p>Sign up to create your profile and access job opportunities or post job listings.</p>
               </div>
-              <button className="how-it-work">Get Started</button>
+              <Link to="/login">
+  <button className="how-it-work">Get Started</button>
+</Link>
             </div>
           </div>
           <div className="card-howitworks">
@@ -28,7 +30,9 @@ const HowItWorks = () => {
                 <p>Find a Job/Post a Job</p>
                 <p>Explore job openings that match your skills or find the right candidates for your vacancies.</p>
               </div>
+              <Link to={"/job/getall"}>
               <button className="how-it-work">Explore Now</button>
+              </Link>
             </div>
           </div>
           <div className="card-howitworks">
@@ -38,7 +42,10 @@ const HowItWorks = () => {
                 <p>Apply For Job/Recruit Suitable Candidates</p>
                 <p>Apply to jobs that interest you or recruit the best talent for your organization.</p>
               </div>
+              <Link to={"/job/getall"}>
               <button className="how-it-work">Apply Now</button>
+              </Link>
+            
             </div>
           </div>
         </div>

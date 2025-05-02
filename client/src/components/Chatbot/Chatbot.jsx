@@ -6,47 +6,51 @@ const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [botTyping, setBotTyping] = useState(""); // State to handle bot typing effect
 
   useEffect(() => {
-    if (isOpen) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: "Hello, how can I help you?", sender: "bot" },
-      ]);
+    if (isOpen && messages.length === 0) {
+      setMessages([{ text: "Hello, how can I help you?", sender: "bot" }]);
     }
   }, [isOpen]);
+  
 
   const handleSend = async () => {
     if (input.trim()) {
       const userMessage = { text: input, sender: "user" };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput("");
-
-      // Send user input to the Flask server and get the response
+  
+      // Show typing indicator (e.g., animated dots)
+      setBotTyping("...");
+  
       try {
-        const response = await fetch("http://127.0.0.1:5000/predict", {
+        const response = await fetch("http://localhost:8000/chatbot/", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ "User Input": input }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_input: input }),
         });
-
+  
         const data = await response.json();
-        const botMessage = {
-          text: data.Prediction || "Sorry, I couldn't understand that.",
-          sender: "bot",
-        };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
+        const botResponseText = data.reply || "Sorry, I couldn't understand that.";
+  
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: botResponseText, sender: "bot" },
+        ]);
       } catch (error) {
+        console.error("Error in backend request:", error);
         const errorMessage = {
           text: "There was an error processing your request. Please try again later.",
           sender: "bot",
         };
         setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      } finally {
+        setBotTyping(""); // Hide typing indicator
       }
     }
   };
+  
 
   const handleClose = () => {
     setIsOpen(false);
@@ -78,6 +82,14 @@ const Chatbot = () => {
                   {msg.sender === "user" && <AiOutlineUser className="chatbot-icon" />}
                 </div>
               ))}
+              {botTyping && (
+                <div className="chatbot-message-container chatbot-bot">
+                  <AiOutlineRobot className="chatbot-icon" />
+                  <div className="chatbot-message chatbot-bot">
+                    <div className="chatbot-text">{botTyping}</div>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="chatbot-input-container">
               <input
