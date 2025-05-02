@@ -51,7 +51,7 @@ const Navbar = () => {
               <li><Link to="/job/me">VIEW YOUR JOBS</Link></li>
             </>
           )}
-          <li><Link to="/">Mock Interview</Link></li>
+          <li><Link to="/mockinterview">Mock Interview</Link></li>
           <li><Link to="/resume">Resume ATS</Link></li>
         </ul>
 

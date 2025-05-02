@@ -1,0 +1,190 @@
+.interview-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    gap: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #ffffff);
+    min-height: 100vh;
+  }
+  
+  .question-section {
+    flex: 1;
+    max-width: 40%;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .question-section h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .question-section p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .question-section button {
+    padding: 12px 20px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .question-section button:hover {
+    background-color: #4338ca;
+  }
+  
+  .video-section {
+    flex: 1;
+    max-width: 60%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  video {
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .speech-text {
+    margin-top: 20px;
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid #e0e0e0;
+    background: #f5f7ff;
+    border-left: 5px solid #4f46e5;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #333;
+    min-height: 80px;
+    box-sizing: border-box;
+  }
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Start Button */
+  .start-btn {
+    padding: 12px 20px;
+    background-color: #22c55e;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .start-btn:hover {
+    background-color: #16a34a;
+  }
+  
+  /* Stop Button */
+  .stop-btn {
+    padding: 12px 20px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .stop-btn:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Next / Submit Button */
+  .next-btn {
+    padding: 12px 20px;
+    background-color: #3b82f6;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .next-btn:hover {
+    background-color: #2563eb;
+  }
+  .timer-display {
+    font-size: 1.2rem;
+    color: #4f46e5;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .video-section {
+    width: 55%;
+    position: relative;
+    background-color: #f1f5f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stop-timer-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .timer-display {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4f46e5;
+    background-color: #eef2ff;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+  
+  .stop-btn {
+    padding: 10px 16px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .stop-btn:hover {
+    background-color: #dc2626;
+  }
+  .camera-off-message {
+    width: 500px;
+    height: 375px;
+    background-color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+    

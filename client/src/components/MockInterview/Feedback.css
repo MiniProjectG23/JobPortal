@@ -1,0 +1,49 @@
+.feedback-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .feedback-container h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .feedback-container p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .feedback-message {
+    margin: 20px 0;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .feedback-message .emoji {
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  
+  .emoji-reactions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .reaction-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .reaction-btn:hover {
+    transform: scale(1.2);
+  }
+  
