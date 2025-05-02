@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaFilePdf, FaCloudUploadAlt } from "react-icons/fa";
+import { Navigate } from "react-router-dom";
 import "./ResumeUpload.css";
 import res_img from "./res.jpg";
+import { Context } from "../../main";
 
 function ResumeUpload() {
+    const {isAuthorized}= useContext(Context);
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("");
     const [jobDesc, setJobDesc] = useState("");
@@ -17,21 +20,22 @@ function ResumeUpload() {
         if (selectedFile && selectedFile.type === "application/pdf") {
             setFile(selectedFile);
             setFileName(selectedFile.name);
+            setError("");
         } else {
             setFile(null);
             setFileName("");
-            alert("Only PDF files are allowed!");
+            setError("Only PDF files are allowed!");
         }
     };
 
     const handleUpload = async () => {
-        if (!file || !jobDesc) {
-            alert("Please select a PDF and enter Job Description.");
+        if (!file || !jobDesc.trim()) {
+            setError("Please select a PDF file and enter the job description.");
             return;
         }
 
         const formData = new FormData();
-        formData.append("file", file); // ✅ Fixed: backend expects "file"
+        formData.append("file", file);
         formData.append("job_desc", jobDesc);
         formData.append("mode", mode);
 
@@ -53,11 +57,15 @@ function ResumeUpload() {
             setResult(data.result || "No response received.");
         } catch (err) {
             console.error(err);
-            setError("An error occurred while uploading the resume.");
+            setError(err.message || "An error occurred while uploading the resume.");
         } finally {
             setLoading(false);
         }
     };
+
+    if (!isAuthorized) {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <div className="resume-page">
@@ -79,7 +87,9 @@ function ResumeUpload() {
                         type="file"
                         accept=".pdf"
                         onChange={handleFileChange}
+                        required
                     />
+
                     {fileName && (
                         <div className="file-preview">
                             <FaFilePdf className="file-icon" />
@@ -93,6 +103,7 @@ function ResumeUpload() {
                         onChange={(e) => setJobDesc(e.target.value)}
                         rows={4}
                         style={{ width: "100%", marginTop: "10px", padding: "10px" }}
+                        required
                     />
 
                     <select
@@ -104,25 +115,33 @@ function ResumeUpload() {
                         <option value="match">Match</option>
                     </select>
 
-                    <button className="sub-button" onClick={handleUpload} disabled={!fileName || loading}>
+                    <button
+                        className="sub-button"
+                        onClick={handleUpload}
+                        disabled={!fileName || !jobDesc.trim() || loading}
+                    >
                         {loading ? "Analyzing..." : "Analyze Resume"}
                     </button>
 
                     {/* Error Message */}
                     {error && (
-                        <div style={{ color: "red", marginTop: "10px" }}>{error}</div>
+                        <div style={{ color: "red", marginTop: "10px" }}>
+                            {error}
+                        </div>
                     )}
 
                     {/* Result Display */}
                     {result && (
-                        <div style={{
-                            marginTop: "20px",
-                            background: "#f3f3f3",
-                            padding: "10px",
-                            borderRadius: "10px",
-                            maxHeight: "400px",
-                            overflowY: "auto"
-                        }}>
+                        <div
+                            style={{
+                                marginTop: "20px",
+                                background: "#f3f3f3",
+                                padding: "10px",
+                                borderRadius: "10px",
+                                maxHeight: "400px",
+                                overflowY: "auto"
+                            }}
+                        >
                             <h3 className="result">Result:</h3>
                             <div dangerouslySetInnerHTML={{ __html: result }} />
                         </div>

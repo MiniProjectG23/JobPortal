@@ -7,6 +7,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
 import "./Login.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +20,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+  
     if (!role) {
       toast.error("Please select a role.");
       return;
@@ -28,6 +31,7 @@ const Login = () => {
     }
   
     setLoading(true);
+  
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/user/login",
@@ -38,27 +42,39 @@ const Login = () => {
         }
       );
   
+      // Success toast
       toast.success(data.message);
+  
+      // Set user info and authorization flag
       setUser(data.data.user);
-      // console.log("In Login: ",user);
       setIsAuthorized(true);
-      localStorage.setItem("user", JSON.stringify(data.data.user)); // Save user info in localStorage
-localStorage.setItem("isAuthorized", true); // Indicate that the user is logged in
-
+  
+      // Save user and auth status in localStorage
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      localStorage.setItem("isAuthorized", true);
+  
+      // Reset input fields
       setEmail("");
       setPassword("");
       setRole("");
+  
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Login failed";
-      toast.error(errorMessage);
+      // Handle error specifically for 401 Unauthorized status
+      if (error.response && error.response.status === 401) {
+        toast.error("Incorrect email or password.");
+      } else {
+        // General error handling
+        const errorMessage = error.response?.data?.message || error.message || "Login failed";
+        toast.error(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
   };
   
 
+  // If the user is already authorized, redirect to the home page
   if (isAuthorized) return <Navigate to="/" />;
-  // Or if you want to go to the previous page they were on:
 
   return (
     <section className="loginPage">
@@ -116,6 +132,7 @@ localStorage.setItem("isAuthorized", true); // Indicate that the user is logged 
           </Link>
         </form>
       </div>
+      <ToastContainer /> 
     </section>
   );
 };
