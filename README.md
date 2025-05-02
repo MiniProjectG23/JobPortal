@@ -28,18 +28,20 @@ Welcome to **Project Job Portal**, a comprehensive backend solution for a job-se
 
 Follow the steps below to run the project locally on your system.
 
-### 🔹 1. Run the Client (React Frontend)
+### 🔹 How to Run the Project
 
 ```bash
 cd client
 npm install
 npm run dev
-🔹 2. Run the Node.js Server
+
+🔹2. Run the Node.js Server
 
 cd server
 npm install
 npm start
-🔹 3. Run the Python Backend (for AI or document-related services)
+
+🔹3. Run the Python Backend (for AI or document-related services)
 cd server/python_backend
 .\venv\Scripts\activate      # For Windows
 # For Mac/Linux use: source venv/bin/activate
