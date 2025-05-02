@@ -34,19 +34,16 @@ Follow the steps below to run the project locally on your system.
 cd client
 npm install
 npm run dev
-
-### 🔹 2. Run the Node.js Server
+###🔹 2. Run the Node.js Server
 ```bash
 cd server
 npm install
 npm start
-
 ###🔹 3. Run the Python Backend (for AI or document-related services)
-bash
-Copy
-Edit
+```
 cd server/python_backend
 .\venv\Scripts\activate      # For Windows
+# For Mac/Linux use: source venv/bin/activate
 
 # Install dependencies
 pip install fastapi uvicorn Pillow pdf2image google-generativeai markdown python-dotenv
