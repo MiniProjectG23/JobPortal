@@ -8,7 +8,8 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isAuthorized, setIsAuthorized, user } = useContext(Context);
+  const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+
 
   const handleLogout = async () => {
     try {

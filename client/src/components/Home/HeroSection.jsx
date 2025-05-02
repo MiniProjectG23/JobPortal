@@ -51,7 +51,7 @@ const HeroSection = () => {
                 <div className="icon-hero">{element.icon}</div>
                 <div className="text-hero">
                   <p>{element.title}</p>
-                  <p>{element.subTitle}</p>
+                  <p className="subtittle">{element.subTitle}</p>
                 </div>
               </div>
             </div>

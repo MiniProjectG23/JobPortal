@@ -153,6 +153,18 @@
     max-width: 100%;
     height: auto;
   }
+
+  .icon-hero{
+    margin-left: 40%;
+  }
+
+  .subtittle{
+    font-size: 1.2rem;
+  }
+
+  .content-hero{
+    width: 100%;
+  }
   
   /* Details Section */
   .details-hero {
@@ -166,7 +178,7 @@
   .card-hero {
     width: 300px;
     height: 300px;
-    background: linear-gradient(to right, #b939e8, #c57bfe);
+    background: linear-gradient(to right, #78139d, #4c0c7c);
     color: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
@@ -191,6 +203,7 @@
   .text-hero p {
     font-size: 1.4rem;
     font-weight: bold;
+    color: white;
   }
   
   /* Animation */
