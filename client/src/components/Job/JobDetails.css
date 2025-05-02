@@ -8,7 +8,7 @@
 .page-job-details {
   padding: 60px 20px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f2f5, #e0e7ff);
+  background: white;
   animation: fadeIn 1s ease-in;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .container-job-details {
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
   padding: 40px;
   border-radius: 16px;
