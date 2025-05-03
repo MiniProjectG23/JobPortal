@@ -3,70 +3,101 @@ import { useNavigate } from 'react-router-dom';
 import questions from './mockData';
 import './InterviewRecorder.css';
 
-const InterviewRecorder = ({ role, onFinish }) => {
+const InterviewRecorder = ({ role }) => {
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const scoreListRef = useRef([]);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [chunks, setChunks] = useState([]);
-  const [recording, setRecording] = useState(false);
+  const [emotion, setEmotion] = useState('');
+  const [confidence, setConfidence] = useState(null);
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null);
+  const captureIntervalRef = useRef(null);
+  const mediaStreamRef = useRef(null); // ✅ to hold stream persistently
 
   const questionList = questions[role];
 
   useEffect(() => {
     const init = async () => {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      videoRef.current.srcObject = mediaStream;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        videoRef.current.srcObject = stream;
+        mediaStreamRef.current = stream;
 
-      const recorder = new MediaRecorder(mediaStream);
-      const localChunks = [];
-
-      recorder.ondataavailable = e => localChunks.push(e.data);
-      recorder.onstop = async () => {
-        clearInterval(timerRef.current);
-        const blob = new Blob(localChunks, { type: 'video/webm' });
-        const file = new File([blob], 'mock_interview.webm');
-        const formData = new FormData();
-        formData.append('video', file);
-
-        const res = await fetch('http://localhost:5000/analyze', {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await res.json();
-        onFinish(data.confidence);
-      };
-
-      recorder.start();
-      setChunks(localChunks);
-      setMediaRecorder(recorder);
-      setRecording(true);
-
-      timerRef.current = setInterval(() => {
-        setTimer(prev => prev + 1);
-      }, 1000);
+        captureIntervalRef.current = setInterval(captureFrameAndSend, 5000);
+        timerRef.current = setInterval(() => setTimer(prev => prev + 1), 1000);
+      } catch (err) {
+        console.error('Error accessing camera/mic:', err);
+      }
     };
 
     init();
 
     return () => {
-      // Clean up stream when component unmounts
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject;
-        stream.getTracks().forEach(track => track.stop());
-      }
+      cleanupResources();
     };
-  }, [navigate, onFinish]);
+  }, []);
+
+  const cleanupResources = () => {
+    console.log('🧹 Cleaning up resources');
+
+    clearInterval(captureIntervalRef.current);
+    clearInterval(timerRef.current);
+
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  const captureFrameAndSend = async () => {
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    canvas.width = 48;
+    canvas.height = 48;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, 48, 48);
+    const base64Image = canvas.toDataURL('image/jpeg');
+
+    try {
+      const res = await fetch('http://localhost:5001/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64Image }),
+      });
+      const data = await res.json();
+      const roundedConfidence = parseFloat(data.confidence.toFixed(4));
+      setEmotion(data.emotion);
+      setConfidence(roundedConfidence);
+      scoreListRef.current.push(roundedConfidence);
+    } catch (error) {
+      console.error('Prediction error:', error);
+    }
+  };
 
   const next = () => {
     if (questionIndex + 1 < questionList.length) {
       setQuestionIndex(prev => prev + 1);
     } else {
-      navigate('/feedback', { state: { role, confidence: 0.8 } });
+      stopAndSubmit();
     }
+  };
+
+  const stopAndSubmit = () => {
+    cleanupResources();
+
+    const avgConfidence = scoreListRef.current.length
+      ? scoreListRef.current.reduce((a, b) => a + b, 0) / scoreListRef.current.length
+      : 0.0;
+
+    navigate('/feedback', {
+      state: { role, confidence: avgConfidence },
+      replace: true,
+    });
   };
 
   const formatTime = (seconds) => {
@@ -77,23 +108,7 @@ const InterviewRecorder = ({ role, onFinish }) => {
 
   const stopRecordingHandler = () => {
     if (window.confirm('Are you sure you want to stop recording?')) {
-      stop();
-      navigate('/feedback', { state: { role, confidence: 0.8 } });
-    }
-  };
-
-  const stop = () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-    }
-    setRecording(false);
-    clearInterval(timerRef.current);
-    setTimer(0);
-
-    // Stop all media tracks
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject;
-      stream.getTracks().forEach(track => track.stop());
+      stopAndSubmit();
     }
   };
 
@@ -111,17 +126,13 @@ const InterviewRecorder = ({ role, onFinish }) => {
 
       <div className="video-section">
         <video ref={videoRef} autoPlay muted width="500" />
-
-        {recording && (
-          <div className="stop-timer-wrapper">
-            <button className="stop-btn" onClick={stopRecordingHandler}>⏹ Stop Recording</button>
-            <div className="timer-display">⏱️ {formatTime(timer)}</div>
-          </div>
-        )}
-
-        <div className="speech-text">
-          <h4>Speech-to-Text:</h4>
-          <p>[Your transcribed text here]</p>
+        <div className="stop-timer-wrapper">
+          <button className="stop-btn" onClick={stopRecordingHandler}>⏹ Stop Recording</button>
+          <div className="timer-display">⏱️ {formatTime(timer)}</div>
+        </div>
+        <div className="emotion-output">
+          <p><strong>Detected Emotion:</strong> {emotion || 'Detecting...'}</p>
+          <p><strong>Confidence:</strong> {confidence !== null ? confidence.toFixed(2) : '...'}</p>
         </div>
       </div>
     </div>
