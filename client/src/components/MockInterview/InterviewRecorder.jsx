@@ -1,72 +1,199 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import questions from './mockData';
 import './InterviewRecorder.css';
 
-const InterviewRecorder = ({ role, onFinish }) => {
+const InterviewRecorder = ({ role }) => {
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const scoreListRef = useRef([]);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [chunks, setChunks] = useState([]);
-  const [recording, setRecording] = useState(false);
+  const [emotion, setEmotion] = useState('');
+  const [confidence, setConfidence] = useState(null);
   const [timer, setTimer] = useState(0);
+  const [questionList, setQuestionList] = useState([]);
+  const [transcript, setTranscript] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [evaluationResults, setEvaluationResults] = useState([]);
   const timerRef = useRef(null);
+  const captureIntervalRef = useRef(null);
+  const mediaStreamRef = useRef(null);
+  const recognitionRef = useRef(null);
 
-  const questionList = questions[role];
 
+  
   useEffect(() => {
-    const init = async () => {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      videoRef.current.srcObject = mediaStream;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-      const recorder = new MediaRecorder(mediaStream);
-      const localChunks = [];
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
 
-      recorder.ondataavailable = e => localChunks.push(e.data);
-      recorder.onstop = async () => {
-        clearInterval(timerRef.current);
-        const blob = new Blob(localChunks, { type: 'video/webm' });
-        const file = new File([blob], 'mock_interview.webm');
-        const formData = new FormData();
-        formData.append('video', file);
-
-        const res = await fetch('http://localhost:5000/analyze', {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await res.json();
-        onFinish(data.confidence);
+      recognition.onresult = (event) => {
+        const speechText = event.results[0][0].transcript;
+        setTranscript(speechText);
+        evaluateAnswer(questionList[questionIndex], speechText);
       };
 
-      recorder.start();
-      setChunks(localChunks);
-      setMediaRecorder(recorder);
-      setRecording(true);
+      recognition.onerror = (event) => {
+        if (event.error === 'no-speech') {
+          console.warn('No speech detected, restarting...');
+          recognition.start(); // Optionally restart recognition
+        } else {
+          console.error('Speech recognition error:', event.error);
+        }
+      };recognition.onend = () => {
+        console.log('Speech recognition ended, restarting...');
+        recognition.start(); // Auto-restart
+      };
+      
+      
 
-      timerRef.current = setInterval(() => {
-        setTimer(prev => prev + 1);
-      }, 1000);
+      recognitionRef.current = recognition;
+    } else {
+      alert("⚠️ Speech Recognition not supported in this browser. Please use Google Chrome.");
+    }
+  }, [questionList, questionIndex]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch('http://localhost:5001/get_questions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role }),
+        });
+        const data = await res.json();
+        setQuestionList(data.questions || []);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+    };
+
+    fetchQuestions();
+
+    const init = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        videoRef.current.srcObject = stream;
+        mediaStreamRef.current = stream;
+
+        clearInterval(captureIntervalRef.current);
+        clearInterval(timerRef.current);
+
+        captureIntervalRef.current = setInterval(captureFrameAndSend, 5000);
+        timerRef.current = setInterval(() => setTimer(prev => prev + 1), 1000);
+      } catch (err) {
+        console.error('Error accessing camera/mic:', err);
+      }
     };
 
     init();
 
     return () => {
-      // Clean up stream when component unmounts
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject;
-        stream.getTracks().forEach(track => track.stop());
-      }
+      cleanupResources();
     };
-  }, [navigate, onFinish]);
+  }, []);
+
+  const cleanupResources = () => {
+    clearInterval(captureIntervalRef.current);
+    clearInterval(timerRef.current);
+
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
+
+  const captureFrameAndSend = async () => {
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    canvas.width = 48;
+    canvas.height = 48;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, 48, 48);
+    const base64Image = canvas.toDataURL('image/jpeg');
+
+    try {
+      const res = await fetch('http://localhost:5001/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64Image }),
+      });
+      const data = await res.json();
+      const roundedConfidence = parseFloat(data.confidence.toFixed(4));
+      setEmotion(data.emotion);
+      setConfidence(roundedConfidence);
+      scoreListRef.current.push(roundedConfidence);
+    } catch (error) {
+      console.error('Prediction error:', error);
+    }
+  };
+
+  const startSpeechRecognition = () => {
+    if (!recognitionRef.current) return;
+    setTranscript('');
+    setIsRecording(true);
+    recognitionRef.current.start();
+  };
+
+  const evaluateAnswer = async (question, answer) => {
+    try {
+      const res = await fetch('http://localhost:5001/evaluate_answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, answer }),
+      });
+      const data = await res.json();
+
+      setEvaluationResults(prev => [
+        ...prev,
+        {
+          question,
+          answer,
+          score: data.score,
+          explanation: data.explanation,
+        }
+      ]);
+
+      setIsRecording(false);
+    } catch (error) {
+      console.error('Evaluation failed:', error);
+    }
+  };
 
   const next = () => {
     if (questionIndex + 1 < questionList.length) {
       setQuestionIndex(prev => prev + 1);
     } else {
-      navigate('/feedback', { state: { role, confidence: 0.8 } });
+      stopAndSubmit();
     }
+  };
+
+  const stopAndSubmit = () => {
+    cleanupResources();
+
+    const avgConfidence = scoreListRef.current.length
+      ? scoreListRef.current.reduce((a, b) => a + b, 0) / scoreListRef.current.length
+      : 0.0;
+
+    navigate('/feedback', {
+      state: {
+        role,
+        confidence: avgConfidence,
+        evaluations: evaluationResults
+      },
+      replace: true,
+    });
   };
 
   const formatTime = (seconds) => {
@@ -77,23 +204,7 @@ const InterviewRecorder = ({ role, onFinish }) => {
 
   const stopRecordingHandler = () => {
     if (window.confirm('Are you sure you want to stop recording?')) {
-      stop();
-      navigate('/feedback', { state: { role, confidence: 0.8 } });
-    }
-  };
-
-  const stop = () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-    }
-    setRecording(false);
-    clearInterval(timerRef.current);
-    setTimer(0);
-
-    // Stop all media tracks
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject;
-      stream.getTracks().forEach(track => track.stop());
+      stopAndSubmit();
     }
   };
 
@@ -101,27 +212,33 @@ const InterviewRecorder = ({ role, onFinish }) => {
     <div className="interview-container">
       <div className="question-section">
         <h3>Question:</h3>
-        <p>{questionList[questionIndex]}</p>
+        {questionList.length > 0 ? (
+          <p>{questionList[questionIndex]}</p>
+        ) : (
+          <p>Loading questions...</p>
+        )}
         <div className="button-group">
+          <button className="record-btn" onClick={startSpeechRecognition} disabled={isRecording}>
+            🎤 {isRecording ? 'Recording...' : 'Answer'}
+          </button>
           <button className="next-btn" onClick={next}>
             {questionIndex + 1 < questionList.length ? '➡️ Next Question' : '✅ Submit'}
           </button>
         </div>
+        {transcript && (
+          <p><strong>Your Answer:</strong> {transcript}</p>
+        )}
       </div>
 
       <div className="video-section">
         <video ref={videoRef} autoPlay muted width="500" />
-
-        {recording && (
-          <div className="stop-timer-wrapper">
-            <button className="stop-btn" onClick={stopRecordingHandler}>⏹ Stop Recording</button>
-            <div className="timer-display">⏱️ {formatTime(timer)}</div>
-          </div>
-        )}
-
-        <div className="speech-text">
-          <h4>Speech-to-Text:</h4>
-          <p>[Your transcribed text here]</p>
+        <div className="stop-timer-wrapper">
+          <button className="stop-btn" onClick={stopRecordingHandler}>⏹ Stop Recording</button>
+          <div className="timer-display">⏱️ {formatTime(timer)}</div>
+        </div>
+        <div className="emotion-output">
+          <p><strong>Detected Emotion:</strong> {emotion || 'Detecting...'}</p>
+          <p><strong>Confidence:</strong> {confidence !== null ? confidence.toFixed(2) : '...'}</p>
         </div>
       </div>
     </div>
