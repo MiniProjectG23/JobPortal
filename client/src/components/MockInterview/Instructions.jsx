@@ -50,37 +50,40 @@
 
 export default function Instructions({ role, onStart }) {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br bg-black px-6 py-12 font-[Orbitron]">
-      <div className="w-full  max-w-4xl bg-white/5 border  border-purple-500/10 backdrop-blur-md rounded-3xl shadow-[0_0_60px_#9b59b620] p-12 md:p-16 text-purple-100">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br bg-purple-800 to-indigo-500 px-6 py-12 font-[Orbitron]">
+<div className="w-full max-w-4xl bg-white/20 border-2 border-red-500 backdrop-blur-md rounded-3xl shadow-[0_0_60px_#9b59b620] p-12 md:p-16 text-purple-100 min-h-[45vh] flex flex-col items-center justify-center animate-fade-in">
 
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-5xl text-white font-extrabold bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-transparent bg-clip-text drop-shadow-2xl animate-pulse">
-            🚀 Initiate Mock Interview
-          </h1>
-          <p className="text-lg tracking-wide mt-14">
-            Candidate Role: <span className="font-bold text-purple-300">{role}</span>
-          </p>
+          <h2 className="text-6xl text-black font-extrabold drop-shadow-2xl">
+             Start Mock Interview
+          </h2>
+          
+          <p className="text-lg tracking-wide mt-24 text-black">
+  Candidate Role: <span className="font-bold text-red-400 animate-bounce">{role}</span>
+</p>
+
         </div>
 
         {/* Instructions List */}
-        <div className="grid gap-8 mt-8 sm:grid-cols-2 md:grid-cols-3">
-          {[
-            "💡 Be Confident & Calm",
-            "👁 Maintain Eye Contact",
-            "🗣 Speak Clearly",
-            "🧠 Structure Answers",
-            "😄 Smile Naturally",
-            "✅ Click 'Start' to Launch",
-          ].map((tip, i) => (
-            <div
-              key={i}
-              className="bg-white/5 hover:bg-purple-400/10 p-6 rounded-xl text-center text-base font-medium border border-purple-400/20 shadow-inner shadow-purple-300/10 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_#9b59b640] cursor-pointer"
-            >
-              {tip}
-            </div>
-          ))}
-        </div>
+        <div className="grid gap-8 mt-8 sm:grid-cols-2 md:grid-cols-3 text-black">
+  {[
+    "💡 Be Confident & Calm",
+    "👁 Maintain Eye Contact",
+    "🗣 Speak Clearly",
+    "🧠 Structure Answers",
+    "😄 Smile Naturally",
+    "✅ Click 'Start' to Launch",
+  ].map((tip, i) => (
+    <div
+      key={i}
+      className="bg-white/70 hover:bg-white p-6 rounded-xl text-center text-base font-medium text-black border border-red-400 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_#ff4d4d50] cursor-pointer"
+    >
+      {tip}
+    </div>
+  ))}
+</div>
+
 
         {/* Start Button */}
         <div className="mt-12 flex justify-center">
