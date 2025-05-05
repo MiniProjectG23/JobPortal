@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # Configure Gemini
-genai.configure(api_key="AIzaSyDaodWJ7dURoLhnxFtbPTqN5mDHHm_Dy1Q")  # Replace with your API key
+genai.configure(api_key="AIzaSyAVYm-oY0YNGeEMiJOea5wOkhU9GrHXrhU")  # Replace with your API key
 gemini_model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
 # Load the facial expression model
