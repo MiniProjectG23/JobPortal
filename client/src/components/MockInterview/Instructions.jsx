@@ -71,7 +71,7 @@ export default function Instructions({ role, onStart }) {
     "💡 Be Confident & Calm",
     "👁 Maintain Eye Contact",
     "🗣 Speak Clearly",
-    "🧠 Structure Answers",
+    "🧠 Give Answers in a Single Flow",
     "😄 Smile Naturally",
     "✅ Click 'Start' to Launch",
   ].map((tip, i) => (

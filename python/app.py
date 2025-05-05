@@ -65,7 +65,7 @@ def get_questions():
 
     try:
       #  model = genai.GenerativeModel('models/gemini-1.5-pro-latest')
-        prompt = f"Generate 5 mock interview questions for the role of a {role}."
+        prompt = f"Generate 5 mock interview questions for the role of a {role}.But that can be explainable not pseudo code "
         print("Prompt:", prompt)
 
         response = gemini_model.generate_content(prompt)

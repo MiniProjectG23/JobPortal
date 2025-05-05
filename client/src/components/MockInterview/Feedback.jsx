@@ -31,8 +31,7 @@ export default function Feedback() {
                 <h4 className="text-md font-semibold text-teal-600 mb-2">Question {index + 1}</h4>
                 <p><strong>Q:</strong> {item.question}</p>
                 <p><strong>Your Answer:</strong> {item.answer}</p>
-                <p><strong>Score:</strong> {item.score}</p>
-                <p><strong>Gemini Feedback:</strong> {item.explanation}</p>
+                <p><strong>AI Feedback:</strong> {item.explanation}</p>
               </div>
             ))
           ) : (
