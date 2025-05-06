@@ -20,6 +20,8 @@ import Chatbot from "./components/Chatbot/Chatbot";
 import Details from "./components/Details/Details"; // Import the Details component
 import ResumeUpload from "./components/ResumeATS/ResumeUpload";
 import { Navigate } from "react-router-dom";
+import MockInterview from "./components/MockInterview/MockInterview";
+import Feedback from "./components/MockInterview/Feedback";
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
 
@@ -41,7 +43,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={isAuthorized ? <Home /> : <Navigate to="/login" />} />
-
+          <Route path="/mockinterview" element={<MockInterview />} />
           <Route path="/job/getall" element={<Jobs />} />
           <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/application/:id" element={<Application />} />
@@ -50,8 +52,9 @@ const App = () => {
           <Route path="/job/me" element={<MyJobs />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/resume" element={<ResumeUpload />} />
+          <Route path="/feedback" element={<Feedback />} />
         </Routes>
-        <Footer />
+        
         <Toaster />
         {isAuthorized && <Chatbot />}
         <Details />
