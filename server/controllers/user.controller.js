@@ -158,4 +158,53 @@ const resumeUpload= asynchandler(async (req, res) => {
     return res.status(200).json(new ApiResponse({ message: "Resume uploaded successfully",data : yourResume.url }, 200, "Resume uploaded successfully"));
   });
 
-export {resumeUpload,registerUser,loginUser,logoutUser,changeCurrentPassword,getCurrentUser}
+const updateUserProfile = asynchandler(async(req,res)=>{
+   
+  const user = await User.findById(req.user?._id);
+  if(!user){
+    throw new ApiError("User not found", 404);
+  }
+
+  console.log("Files:", req.files);
+  console.log("Body:", req.body);
+
+  //profile pic upload
+  const profilePicPath = req.files?.profilePic?.[0]?.path;
+  if(profilePicPath){
+    const uploadProfilePic = await uploadOnCloudinary(profilePicPath);
+    if(!uploadProfilePic){
+      throw new ApiError("Error uploading profile picture", 500);
+    }
+    user.profilePic = uploadProfilePic.url;
+  }
+
+  // resume Upload
+  const resumeFilePath = req.files?.resume?.[0]?.path;
+  if(resumeFilePath){
+    const uploadResume = await uploadOnCloudinary(resumeFilePath);
+    if(!uploadResume){
+      throw new ApiError("Resume Upload Failed" , 500);
+    }
+    user.resume = uploadResume.url;
+  }
+
+  const {name , phone} = req.body;
+  if(name) user.name = name;
+  if(phone) user.phone = phone;
+
+  await user.save({validateBeforeSave:false});
+
+  return res.status(200).json(
+       new ApiResponse(user,200,"User Profile updated successfully")
+  );
+});
+
+const getUserDashboard = asynchandler(async(req,res)=>{
+  const user = await User.findById(req.user?._id).select("-password -refreshToken");
+  if(!user){
+    throw new ApiError("User not found", 404);
+  }
+  return res.status(200).json(new ApiResponse(user,200,"User Dashboard"));
+});
+
+export {resumeUpload,registerUser,loginUser,logoutUser,changeCurrentPassword,getCurrentUser,updateUserProfile,getUserDashboard}

@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import Cookies from "js-cookie"
+
 
 // Define the context with default values
 const defaultContext = {
@@ -16,27 +18,26 @@ const AppWrapper = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Check localStorage on initial load
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedAuthStatus = localStorage.getItem("isAuthorized");
+useEffect(() => {
+  const storedUser = Cookies.get("user");
+  const storedAuthStatus = Cookies.get("isAuthorized");
 
-    if (storedUser && storedAuthStatus) {
-      setUser(JSON.parse(storedUser)); // Parse the stored user data
-      setIsAuthorized(true); // Set the authorization status to true
-    }
-  }, []);
+  if (storedUser && storedAuthStatus === "true") {
+    setUser(JSON.parse(storedUser));
+    setIsAuthorized(true);
+  }
+}, []);
 
-  // Save the user and authorization status to localStorage whenever they change
-  useEffect(() => {
-    if (isAuthorized && user) {
-      localStorage.setItem("user", JSON.stringify(user)); // Save user data
-      localStorage.setItem("isAuthorized", "true"); // Mark as authorized
-    } else {
-      localStorage.removeItem("user"); // Remove user data if logged out
-      localStorage.removeItem("isAuthorized"); // Remove authorization status
-    }
-  }, [isAuthorized, user]); // Run this effect when either isAuthorized or user changes
+useEffect(() => {
+  if (isAuthorized && user) {
+    Cookies.set("user", JSON.stringify(user), { expires: 1 }); // 1 day expiry
+    Cookies.set("isAuthorized", "true", { expires: 1 });
+  } else {
+    Cookies.remove("user");
+    Cookies.remove("isAuthorized");
+  }
+}, [isAuthorized, user]);
+
 
   return (
     <Context.Provider value={{ isAuthorized, setIsAuthorized, user, setUser }}>

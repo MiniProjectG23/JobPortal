@@ -11,12 +11,17 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique : true,
     required: [true, "Please enter your Email!"],
     validate: [validator.isEmail, "Please provide a valid Email!"],
   },
   phone: {
     type: Number,
     required: [true, "Please enter your Phone Number!"],
+    validate: {
+  validator: (v) => /^[6-9]\d{9}$/.test(v),
+  message: "Invalid Indian phone number!",
+}
   },
   password: {
     type: String,
@@ -28,6 +33,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please select a role"],
     enum: ["Job Seeker", "Employer"],
+  },
+  profilePic:{
+    type:String,
+    default:""
+  },
+  resume:{
+    type:String,
+    default:""
   },
   refreshToken: {
     type: String,
