@@ -6,7 +6,7 @@ import app from "./app.js";
 dotenv.config({path: "./.env"});
 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 
 connectDB()
 .then(()=>{

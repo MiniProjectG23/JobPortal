@@ -9,12 +9,15 @@ from PIL import Image
 import openai
 import google.generativeai as genai
 import json
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # Configure Gemini
-genai.configure(api_key="AIzaSyAVYm-oY0YNGeEMiJOea5wOkhU9GrHXrhU")  # Replace with your API key
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 gemini_model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
 # Load the facial expression model

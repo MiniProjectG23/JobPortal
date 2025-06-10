@@ -49,9 +49,6 @@ const Login = () => {
       setUser(data.data.user);
       setIsAuthorized(true);
   
-      // Save user and auth status in localStorage
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      localStorage.setItem("isAuthorized", true);
   
       // Reset input fields
       setEmail("");

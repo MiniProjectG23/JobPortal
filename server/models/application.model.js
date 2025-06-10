@@ -63,6 +63,11 @@ const applicationSchema = new mongoose.Schema({
     type: Number,
     default: -1,
   },
+  job: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Job",
+  required: true,
+},
 });
 
 export const Application = mongoose.model("Application", applicationSchema);
